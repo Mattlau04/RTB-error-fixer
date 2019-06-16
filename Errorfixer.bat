@@ -10,6 +10,7 @@ echo checking for python problem...
 
 python --version > NUL
 if %ERRORLEVEL% EQU 0 GOTO HASPYTHON
+cls
 echo You need python 3 for this script to work
 echo Please install python 3 (3.x.x) and click add to path during install then re-open this script
 if EXIST "%localappdata%\Programs\Python" echo.
@@ -44,11 +45,14 @@ echo It looks like pip is missing
 echo Trying to install it automaticly...
 timeout /T 1 /NOBREAK
 echo Downloading pip...
+echo.
 curl --help > NUL
 if NOT %errorlevel% EQU 0 goto nocurl
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 echo installing pip...
+echo.
 python get-pip.py
+del /Q get-pip.py
 echo pip is installed!
 echo loading next part of the fixing script...
 timeout /t 3 > NUL
