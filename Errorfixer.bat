@@ -10,16 +10,25 @@ echo checking for python problem...
 
 python --version > NUL
 if %ERRORLEVEL% EQU 0 GOTO HASPYTHON
-cls
+if EXIST "%localappdata%\Programs\Python" goto notinpath
 echo You need python 3 for this script to work
 echo Please install python 3 (3.x.x) and click add to path during install then re-open this script
-if EXIST "%localappdata%\Programs\Python" echo.
-if EXIST "%localappdata%\Programs\Python" echo it look like you have a python folder (%localappdata%\Programs\Python), but python can't be used in the cmd. Did you add python to path?
 echo.
 echo press any key to open the RTB wiki page on how to install python and close the script
 pause > NUL
 echo opening the RTB wiki page on how to install python...
 start https://github.com/DeadBread76/Raid-Toolbox/wiki/How-to-install-Python
+exit
+
+:notinpath:
+echo it look like you have a python folder (%localappdata%\Programs\Python), but python can't be used in the cmd.
+echo this is often the result of a python not beeing in path, but it can also rarely be the result of a poor uninstallation
+echo the tutorial you will be redirected to take in charge both cases
+echo.
+echo press any key to open the RTB wiki page on how to add python to path and close the script
+pause > NUL
+echo opening the RTB wiki page on how to add python to path...
+start https://github.com/DeadBread76/Raid-Toolbox/wiki/How-to-add-python-to-path-post-installation
 exit
 
 :HASPYTHON
@@ -45,14 +54,11 @@ echo It looks like pip is missing
 echo Trying to install it automaticly...
 timeout /T 1 /NOBREAK
 echo Downloading pip...
-echo.
 curl --help > NUL
 if NOT %errorlevel% EQU 0 goto nocurl
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 echo installing pip...
-echo.
 python get-pip.py
-del /Q get-pip.py
 echo pip is installed!
 echo loading next part of the fixing script...
 timeout /t 3 > NUL
